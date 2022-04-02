@@ -7,24 +7,15 @@ public class Main
 {
     public static Scanner scanner;  // Note: Do not change this line.
 
-    public static void theStudentsGame()
+    public static void settingTheBoard(int[][] board , int m , int n)
     {
         int Letters = 'z'-'a'+1;
-        int m;
-        int n;
-        String board_size;
         boolean flag;
         String indexes;
         int x_value;
         int y_value;
-        int[][] board;
 
-        System.out.println("Dear president, please enter the board’s size");
-        board_size = scanner.nextLine();
-        m = (board_size.charAt(0))-Letters;
-        n = (board_size.charAt(board_size.length()-1))-Letters;
 
-        board = new int[m][n];
         for(int i = 0 ; i < m ; i++)
         {
             for(int j = 0 ; j < n ; j++)
@@ -37,7 +28,7 @@ public class Main
 
         while (flag)
         {
-            System.out.println("Dear president, please enter the cell's indexes");
+            System.out.println("Dear president, please enter the cell's indexes.");
             indexes = scanner.nextLine();
             if (indexes.equals("Yokra"))
             {
@@ -48,7 +39,11 @@ public class Main
                 x_value = (indexes.charAt(0))-Letters;
                 y_value = (indexes.charAt(3))-Letters;
 
-                if((x_value>n-1) || (x_value<0) || (y_value>m-1) || (y_value<0)) flag = false;
+                if((x_value>n-1) || (x_value<0) || (y_value>m-1) || (y_value<0))
+                {
+                    System.out.println("The cell is not within the board’s boundaries, enter a new cell.");
+                }
+
 
                 else if(board[x_value][y_value] == 0 ) board[x_value][y_value] = 1;
 
@@ -57,15 +52,27 @@ public class Main
             }
         }
 
+    }
+
+
+    public static void theStudentsGame()
+    {
 
     }
 
     public static void main(String[] args) throws IOException
     {
+        int Letters = 'z'-'a'+1;
         String path = args[0];
         scanner = new Scanner(new File(path));
         int numberOfGames = scanner.nextInt();
-        scanner.nextLine();
+        int m,n;
+        System.out.println("Dear president, please enter the board’s size");
+        String board_size = scanner.nextLine();
+        m = board_size.charAt(0) - Letters;
+        n = board_size.charAt(4) - Letters;
+        int[][] board = new int[m][n];
+        settingTheBoard(board , m , n);
 
         for (int i = 1; i <= numberOfGames; i++) {
             System.out.println("Game number " + i + " starts.");
