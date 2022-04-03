@@ -101,6 +101,25 @@ public class Main
         }
         System.out.println("All games are ended.");
     }
+
+    public static int gameOver(int board[][], int n, int m, int round, int rounds)
+    {
+        if(round >= rounds)
+        {
+            return 1;
+        }
+        for(int i = 0; i < n; i++)
+        {
+            for(int j = 0; j < m; j++)
+            {
+                if( board[i][j] != 0)
+                {
+                    return 0;
+                }
+            }
+        }
+        return 2;
+    }
 }
 
 
