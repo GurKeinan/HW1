@@ -36,8 +36,8 @@ public class Main
             }
             else
             {
-                x_value = (indexes.charAt(0))-Letters;
-                y_value = (indexes.charAt(3))-Letters;
+                x_value = (indexes.charAt(0))-48;
+                y_value = (indexes.charAt(3))-48;
 
                 if((x_value>n-1) || (x_value<0) || (y_value>m-1) || (y_value<0))
                 {
@@ -55,8 +55,22 @@ public class Main
     }
 
 
-    public static void theStudentsGame()
+    public static void theStudentsGame(int[][] board , int m , int n)
     {
+        for (int i = 0 ; i < m ; i ++)
+        {
+            System.out.println("");
+            for(int j = 0 ; j < n ; j++)
+            {
+                if(board[i][j] == 0)
+                {
+                    System.out.print("▯");
+                }
+                else System.out.print("▮");
+            }
+
+        }
+
 
     }
 
@@ -65,18 +79,23 @@ public class Main
         int Letters = 'z'-'a'+1;
         String path = args[0];
         scanner = new Scanner(new File(path));
+        //scanner = new Scanner(System.in);
         int numberOfGames = scanner.nextInt();
+        scanner.nextLine();
+        int playedGames = 0;
         int m,n;
         System.out.println("Dear president, please enter the board’s size");
         String board_size = scanner.nextLine();
-        m = board_size.charAt(0) - Letters;
-        n = board_size.charAt(4) - Letters;
+        m = board_size.charAt(0) - 48;
+        n = board_size.charAt(4) - 48;
         int[][] board = new int[m][n];
         settingTheBoard(board , m , n);
 
+
+
         for (int i = 1; i <= numberOfGames; i++) {
             System.out.println("Game number " + i + " starts.");
-            theStudentsGame();
+            theStudentsGame(board , m , n);
             System.out.println("Game number " + i + " ended.");
             System.out.println("-----------------------------------------------");
         }
