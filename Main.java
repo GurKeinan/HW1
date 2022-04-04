@@ -54,12 +54,11 @@ public class Main
 
     }
 
-
-    public static void theStudentsGame(int[][] board , int m , int n)
+    public static void printBoard(int[][] board , int m , int n)
     {
         for (int i = 0 ; i < m ; i ++)
         {
-            System.out.println("");
+            System.out.println();
             for(int j = 0 ; j < n ; j++)
             {
                 if(board[i][j] == 0)
@@ -70,13 +69,65 @@ public class Main
             }
 
         }
+        System.out.println();
+
+        }
+
+        public static int[] validAroundCell(int[][] board , int x , int y)
+        {
+            int[] counters = {0,0};
+            for (int i = x-1 ; i < x+2 ; i++)
+            {
+                for (int j = y-1 ; j < y+2 ; j++)
+                {
+                    if (i == x && j == y) continue;
+                    else if(board[i][j] == 1) counters[0]+=1;
+                    else if(board[i][j] == 0) counters[1]+=1;
+                }
+            }
+            return counters;
+        }
+        public static void updateBoard(int[][] board , int m , int n)
+        {
+            int[] counters = {0,0};
+            int[][] temp_board = new int[m+2][n+2];
+            for(int i = 0 ; i < m+2 ; i++)
+            {
+                temp_board[i][0] = -1;
+                temp_board[i][n+1] = -1;
+            }
+            for(int i = 0 ; i < n+2 ; i++)
+            {
+                temp_board[0][i] = -1;
+                temp_board[m+1][i] = -1;
+            }
+
+            for (int i = 1 ; i < m+2 ; i ++)
+            {
+                for (int j = 1 ; j < n+2 ; j ++)
+                {
+                    counters = validAroundCell(board , j , i);
+                    //conditions for updating the cells in the original board
+                }
+            }
+        }
+
+
+    public static void theStudentsGame(int[][] board , int m , int n)
+    {
+        printBoard(board , m , n);
 
 
     }
 
+
+
+
+
+
+
     public static void main(String[] args) throws IOException
     {
-        int Letters = 'z'-'a'+1;
         String path = args[0];
         scanner = new Scanner(new File(path));
         //scanner = new Scanner(System.in);
