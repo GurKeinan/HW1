@@ -2,7 +2,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
 
-
 public class Main
 {
     public static Scanner scanner;  // Note: Do not change this line.
@@ -17,6 +16,18 @@ public class Main
     {
         return ((x<y) ? x:y);
     }
+
+    public static int [] boardSize(String board_size)
+    {
+        int [] sizes = new int[2];
+
+        String num1 = board_size.split(" X ")[0];
+        String num2 = board_size.split(" X ")[1];
+        sizes[0] = Integer.parseInt(num1);
+        sizes[1] = Integer.parseInt(num2);
+        return sizes;
+    }
+
     public static int[][] settingTheBoard()
     {
 
@@ -24,11 +35,13 @@ public class Main
         String indexes;
         int x_value;
         int y_value;
+        int [] sizes = new int [2];
 
         System.out.println("Dear president, please enter the board’s size");
         String board_size = scanner.nextLine();
-        int m = board_size.charAt(0) - 48;
-        int n = board_size.charAt(4) - 48;
+        sizes = boardSize(board_size);
+        int m = sizes[0];
+        int n = sizes[1];
         int[][] board = new int[m][n];
 
 
@@ -41,10 +54,12 @@ public class Main
         }
 
         flag = true;
+        boolean PrintEnterIndexes = true;
 
         while (flag)
         {
-            System.out.println("Dear president, please enter the cell's indexes.");
+            if(PrintEnterIndexes == true) System.out.println("Dear president, please enter the cell's indexes.");
+            PrintEnterIndexes = true;
             indexes = scanner.nextLine();
             if (indexes.equals("Yokra"))
             {
@@ -52,12 +67,13 @@ public class Main
             }
             else
             {
-                x_value = (indexes.charAt(0))-48;
-                y_value = (indexes.charAt(3))-48;
+                x_value = Integer.parseInt(indexes.split(", ")[0]);
+                y_value = Integer.parseInt(indexes.split(", ")[1]);
 
                 if((x_value>n-1) || (x_value<0) || (y_value>m-1) || (y_value<0))
                 {
                     System.out.println("The cell is not within the board’s boundaries, enter a new cell.");
+                    PrintEnterIndexes = false;
                 }
 
 
@@ -112,7 +128,7 @@ public class Main
             {
                 for (int j = 1 ; j < n ; j ++)
                 {
-                    counter = validAroundCell(board ,m ,n , j , i);
+                    counter = validAroundCell(board ,m ,n , i , j);
                     //conditions for updating the cells in the original board
                     if((board[i][j] == 1)&&(counter <= 1))
                     {
@@ -151,16 +167,20 @@ public class Main
         int done = 0;
         int round = 1;
         int [][] prev_board = new int [m][n];
+        System.out.println("semester number: " + round);
+        printBoard(board, m , n);
+        done = gameOver(board, prev_board, n, m, round);
         while (done == 0)
         {
-            System.out.println("semester number " + round);
-            printBoard(board, m, n);
-            System.out.println("Number of students: " + validStudents(board, m, n));
             copyBoard(board, prev_board, m, n);
             updateBoard(board, m, n);
-            done = gameOver(board, prev_board, n, m, round);
             round++;
+            System.out.println("semester number: " + round);
+            printBoard(board, m, n);
+            System.out.println("Number of students: " + validStudents(board, m, n));
+            done = gameOver(board, prev_board, n, m, round);
         }
+
 
     }
 
@@ -207,12 +227,14 @@ public class Main
         int playedGames = 0;
         int m,n;
 
-        int[][] board = settingTheBoard();
+
 
 
 
         for (int i = 1; i <= numberOfGames; i++) {
+
             System.out.println("Game number " + i + " starts.");
+            int[][] board = settingTheBoard();
             theStudentsGame(board , board.length, board[0].length, numberOfGames);
             System.out.println("Game number " + i + " ended.");
             System.out.println("-----------------------------------------------");
@@ -243,15 +265,16 @@ public class Main
                 }
             }
         }
-        if(same)
-        {
-            System.out.println("The students have stabilized.");
-            return 1;
-        }
         if(zeros == true) {
             System.out.println("There are no more students.");
             return 1;
         }
+        if(same == true)
+        {
+            System.out.println("The students have stabilized.");
+            return 1;
+        }
+
         return 0;
 
 
