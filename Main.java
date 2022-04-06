@@ -7,13 +7,29 @@ public class Main
 {
     public static Scanner scanner;  // Note: Do not change this line.
 
-    public static void settingTheBoard(int[][] board , int m , int n)
+
+
+    public static int max(int x , int y)
     {
-        int Letters = 'z'-'a'+1;
+        return ((x>y) ? x:y);
+    }
+    public static int min(int x , int y)
+    {
+        return ((x<y) ? x:y);
+    }
+    public static int[][] settingTheBoard()
+    {
+
         boolean flag;
         String indexes;
         int x_value;
         int y_value;
+
+        System.out.println("Dear president, please enter the board’s size");
+        String board_size = scanner.nextLine();
+        int m = board_size.charAt(0) - 48;
+        int n = board_size.charAt(4) - 48;
+        int[][] board = new int[m][n];
 
 
         for(int i = 0 ; i < m ; i++)
@@ -51,6 +67,7 @@ public class Main
 
             }
         }
+        return board;
 
     }
 
@@ -71,49 +88,65 @@ public class Main
         }
         System.out.println();
 
-        }
-
-        public static int[] validAroundCell(int[][] board , int x , int y)
+    }
+    public static int validAroundCell(int[][] board , int m , int n, int x , int y)
         {
-            int[] counters = {0,0};
-            for (int i = x-1 ; i < x+2 ; i++)
+            int counter = 0;
+            for (int i = max(x-1,0) ; i < min(x+2 , n-1) ; i++)
             {
-                for (int j = y-1 ; j < y+2 ; j++)
+                for (int j = max(y-1 , 0) ; j < min(y+2 , m-1) ; j++)
+
                 {
                     if (i == x && j == y) continue;
-                    else if(board[i][j] == 1) counters[0]+=1;
-                    else if(board[i][j] == 0) counters[1]+=1;
+                    else if(board[i][j] == 1) counter++;
                 }
             }
-            return counters;
+            return counter;
         }
-        public static void updateBoard(int[][] board , int m , int n)
+        public static int[][] updateBoard(int[][] board , int m , int n)
         {
-            int[] counters = {0,0};
-            int[][] temp_board = new int[m+2][n+2];
-            for(int i = 0 ; i < m+2 ; i++)
-            {
-                temp_board[i][0] = -1;
-                temp_board[i][n+1] = -1;
-            }
-            for(int i = 0 ; i < n+2 ; i++)
-            {
-                temp_board[0][i] = -1;
-                temp_board[m+1][i] = -1;
-            }
+            int counter = 0;
+            int[][] temp_board = new int[m][n];
 
-            for (int i = 1 ; i < m+2 ; i ++)
+            for (int i = 1 ; i < m ; i ++)
             {
-                for (int j = 1 ; j < n+2 ; j ++)
+                for (int j = 1 ; j < n ; j ++)
                 {
-                    counters = validAroundCell(board , j , i);
+                    counter = validAroundCell(board ,m ,n , j , i);
                     //conditions for updating the cells in the original board
+                    if((board[i][j] == 1)&&(counter <= 1))
+                    {
+                        temp_board[i][j] = 0;
+                    }
+                    else if((board[i][j] == 1)&&(counter >= 2)&&(counter <= 3))
+                    {
+                        temp_board[i][j] = 1;
+                    }
+                    else if((board[i][j] == 1)&&(counter > 3))
+                    {
+                        temp_board[i][j] = 0;
+                    }
+                    else if((board[i][j] == 0)&&(counter == 3))
+                    {
+                        temp_board[i][j] = 1;
+                    }
+                    else if((board[i][j] == 0)&&(counter == 3))
+                    {
+                        temp_board[i][j] = 1;
+                    }
+                    else if((board[i][j] == 0)&&(counter != 3))
+                    {
+                        temp_board[i][j] = 0;
+                    }
+
+
                 }
             }
+            return temp_board;
         }
 
 
-    public static void theStudentsGame(int[][] board , int m , int n)
+    public static void theStudentsGame(int[][] board , int m , int n , int numOfGames)
     {
         printBoard(board , m , n);
 
@@ -135,18 +168,14 @@ public class Main
         scanner.nextLine();
         int playedGames = 0;
         int m,n;
-        System.out.println("Dear president, please enter the board’s size");
-        String board_size = scanner.nextLine();
-        m = board_size.charAt(0) - 48;
-        n = board_size.charAt(4) - 48;
-        int[][] board = new int[m][n];
-        settingTheBoard(board , m , n);
+
+        int[][] board = settingTheBoard();
 
 
 
         for (int i = 1; i <= numberOfGames; i++) {
             System.out.println("Game number " + i + " starts.");
-            theStudentsGame(board , m , n);
+            theStudentsGame(board , board.length, board[0].length, numberOfGames);
             System.out.println("Game number " + i + " ended.");
             System.out.println("-----------------------------------------------");
         }
