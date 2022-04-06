@@ -148,10 +148,10 @@ public class Main
 
     public static void theStudentsGame(int[][] board , int m , int n , int numOfGames)
     {
-        int done = 1;
+        int done = 0;
         int round = 1;
         int [][] prev_board = new int [m][n];
-        while (done == 1)
+        while (done == 0)
         {
             System.out.println("semester number " + round);
             printBoard(board, m, n);
@@ -223,6 +223,7 @@ public class Main
     public static int gameOver(int board[][], int [][] prev_board, int n, int m, int round)
     {
         boolean same = true;
+        boolean zeros = true;
         if(round >= 1000)
         {
             System.out.println("The semesters limitation is over.");
@@ -238,7 +239,7 @@ public class Main
                 }
                 if( board[i][j] != 0)
                 {
-                    return 0;
+                    zeros = false;
                 }
             }
         }
@@ -247,8 +248,11 @@ public class Main
             System.out.println("The students have stabilized.");
             return 1;
         }
-        System.out.println("There are no more students.");
-        return 1;
+        if(zeros == true) {
+            System.out.println("There are no more students.");
+            return 1;
+        }
+        return 0;
 
 
     }
