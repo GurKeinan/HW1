@@ -115,10 +115,48 @@ public class Main
 
     public static void theStudentsGame(int[][] board , int m , int n)
     {
-        printBoard(board , m , n);
-
+        int done = 1;
+        int round = 1;
+        int [][] prev_board = new int [m][n];
+        while (done == 1)
+        {
+            System.out.println("semester number " + round);
+            printBoard(board, m, n);
+            System.out.println("Number of students: " + validStudents(board, m, n));
+            copyBoard(board, prev_board, m, n);
+            updateBoard(board, m, n);
+            done = gameOver(board, prev_board, n, m, round);
+            round++;
+        }
 
     }
+
+    public static void copyBoard(int [][] board, int [][] prev_board, int m, int n)
+    {
+        for(int i = 0; i < m; i++)
+        {
+            for(int j = 0; j < n; j++)
+            {
+                prev_board[i][j] = board[i][j];
+            }
+        }
+    }
+
+    public static int validStudents(int [][] board, int m, int n) {
+        int counter = 0;
+        for (int i = 0; i < m; i++)
+        {
+            for (int j = 0; j < n; j++)
+            {
+                if(board[i][j] != 0)
+                {
+                    counter++;
+                }
+            }
+        }
+        return counter;
+    }
+
 
 
 
@@ -153,23 +191,37 @@ public class Main
         System.out.println("All games are ended.");
     }
 
-    public static int gameOver(int board[][], int n, int m, int round, int rounds)
+    public static int gameOver(int board[][], int [][] prev_board, int n, int m, int round)
     {
-        if(round >= rounds)
+        boolean same = true;
+        if(round >= 1000)
         {
+            System.out.println("The semesters limitation is over.");
             return 1;
         }
-        for(int i = 0; i < n; i++)
+        for(int i = 0; i < m; i++)
         {
-            for(int j = 0; j < m; j++)
+            for(int j = 0; j < n; j++)
             {
+                if(board[i][j] != prev_board[i][j])
+                {
+                    same = false;
+                }
                 if( board[i][j] != 0)
                 {
                     return 0;
                 }
             }
         }
-        return 2;
+        if(same)
+        {
+            System.out.println("The students have stabilized.");
+            return 1;
+        }
+        System.out.println("There are no more students.");
+        return 1;
+
+
     }
 }
 
