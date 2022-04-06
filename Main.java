@@ -103,7 +103,7 @@ public class Main
             }
             return counter;
         }
-        public static int[][] updateBoard(int[][] board , int m , int n)
+        public static void updateBoard(int[][] board , int m , int n)
         {
             int counter = 0;
             int[][] temp_board = new int[m][n];
@@ -142,7 +142,7 @@ public class Main
 
                 }
             }
-            return temp_board;
+            copyBoard(temp_board, board,m, n);
         }
 
 
