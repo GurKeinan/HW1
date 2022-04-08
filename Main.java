@@ -37,7 +37,7 @@ public class Main
         int y_value;
         int [] sizes = new int [2];
 
-        System.out.println("Dear president, please enter the board’s size");
+        System.out.println("Dear president, please enter the board’s size.");
         String board_size = scanner.nextLine();
         sizes = boardSize(board_size);
         int m = sizes[0];
@@ -58,7 +58,7 @@ public class Main
 
         while (flag)
         {
-            if(PrintEnterIndexes == true) System.out.println("Dear president, please enter the cell's indexes.");
+            if(PrintEnterIndexes == true) System.out.println("Dear president, please enter the cell’s indexes.");
             PrintEnterIndexes = true;
             indexes = scanner.nextLine();
             if (indexes.equals("Yokra"))
@@ -91,7 +91,6 @@ public class Main
     {
         for (int i = 0 ; i < m ; i ++)
         {
-            System.out.println();
             for(int j = 0 ; j < n ; j++)
             {
                 if(board[i][j] == 0)
@@ -100,9 +99,9 @@ public class Main
                 }
                 else System.out.print("▮");
             }
+            System.out.println();
 
         }
-        System.out.println();
 
     }
     public static int validAroundCell(int[][] board , int m , int n, int x , int y)
@@ -161,23 +160,39 @@ public class Main
             copyBoard(temp_board, board,m, n);
         }
 
+    public static boolean compare_boards(int[][] board1 , int[][] board2 , int m , int n)
+    {
+        for(int i = 0 ; i < m ; i++)
+        {
+            for (int j = 0 ; j < n ; j++)
+            {
+                if(board1[i][j] != board2[i][j]) return false;
+            }
+        }
+        return true;
+    }
+
 
     public static void theStudentsGame(int[][] board , int m , int n , int numOfGames)
     {
         int done = 0;
         int round = 1;
         int [][] prev_board = new int [m][n];
-        System.out.println("semester number: " + round);
+        System.out.println("Semester number " + round + ":");
         printBoard(board, m , n);
+        System.out.println("Number of students: " + validStudents(board, m, n)+"\n");
         done = gameOver(board, prev_board, n, m, round);
         while (done == 0)
         {
             copyBoard(board, prev_board, m, n);
             updateBoard(board, m, n);
             round++;
-            System.out.println("semester number: " + round);
-            printBoard(board, m, n);
-            System.out.println("Number of students: " + validStudents(board, m, n));
+            if (!compare_boards(board , prev_board , m , n))
+            {
+                System.out.println("Semester number " + round + ":");
+                printBoard(board, m, n);
+                System.out.println("Number of students: " + validStudents(board, m, n)+"\n");;
+            }
             done = gameOver(board, prev_board, n, m, round);
         }
 
