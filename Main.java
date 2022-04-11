@@ -74,7 +74,7 @@ public class Main {
     }
 
     /**
-     * Prints board.
+     * Prints board of students validity.
      *
      * @param board matrix of current semester students validity
      * @param m     number of rows in board
@@ -116,7 +116,7 @@ public class Main {
         }
 
     /**
-     * Updates board array according to certain conditions
+     * Updates board according to certain conditions for next semester
      *
      * @param board matrix of current semester students validity
      * @param m     number of rows in game board
@@ -201,7 +201,7 @@ public class Main {
     }
 
     /**
-     * Copies current semester board into previous semster board
+     * Copies current semester board into previous semester board
      *
      * @param board     matrix of current semester students validity
      * @param prevBoard board of the previous semester
@@ -217,6 +217,8 @@ public class Main {
     }
 
     /**
+     * Returns how many valid students there are in semester
+     *
      * @param board matrix of current semester students validity
      * @param m     number of rows in board
      * @param n     number of columns in board
@@ -235,6 +237,8 @@ public class Main {
     }
 
     /**
+     * Recieves files as arguments and plays student game a given number of times
+     *
      * @param args input file for game
      * @throws IOException
      */
@@ -257,6 +261,7 @@ public class Main {
     }
 
     /**
+     * Returns whether the game needs to end after last semester
      *
      * @param board     matrix of current semester students validity
      * @param prevBoard matrix of previous semester students validity
@@ -266,19 +271,11 @@ public class Main {
      * @return          whether game ending conditions have been met
      */
     public static int gameOver(int board[][], int [][] prevBoard, int n, int m, int round) {
-        boolean zeros = true;
         if(round >= 1000) {
             System.out.println("The semesters limitation is over.");
             return 1;
         }
-        for(int i = 0; i < m; i++) {
-            for(int j = 0; j < n; j++) {
-                if( board[i][j] != 0) {
-                    zeros = false;
-                }
-            }
-        }
-        if(zeros == true) {
+        if(validStudents(board, m, n) == 0) {
             System.out.println("There are no more students.");
             return 1;
         }
